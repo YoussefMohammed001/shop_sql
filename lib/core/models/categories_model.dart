@@ -10,12 +10,5 @@ class CategoryModel{
     id = map["id"];
 
   }
-toJson() {
-  return {
-    "cat": category,
-    "id": id,
-  };
-}
-
 
 }

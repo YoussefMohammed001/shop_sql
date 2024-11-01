@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sql/core/routing/routes.dart';
 import 'package:shop_sql/features/main_screen/presentation/view/screen/main_screen.dart';
+import 'package:shop_sql/features/products/presentation/view/screens/products_screen.dart';
+import 'package:shop_sql/features/products/products_args.dart';
 import 'package:shop_sql/features/splash/splash_screen.dart';
 
 class RouteServices {
+
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     // ('generateRoute => ${routeSettings.name}');
     //safePrint('generateRoute => ${routeSettings.arguments}');
@@ -17,6 +20,15 @@ class RouteServices {
         return MaterialPageRoute(
           builder: (_) =>  const MainScreen(),
         );
+        case Routes.productScreen:
+        return MaterialPageRoute(
+          builder: (_) {
+            final args = routeSettings.arguments as ProductsArgs;
+            return ProductsScreen(args: args,);
+          },
+        );
+
+
 
 
       default:

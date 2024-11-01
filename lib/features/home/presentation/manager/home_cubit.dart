@@ -21,5 +21,15 @@ class HomeCubit extends Cubit<HomeState> {
     getCategories();
   }
 
+  deleteCategory(int id) async {
+    ShopDatabase.deleteCategory(id);
+    getCategories();
+  }
+
+  updateCategory(CategoryModel categoryModel) async {
+    ShopDatabase.updateCategory(categoryModel);
+    getCategories();
+  }
+
 
 }
