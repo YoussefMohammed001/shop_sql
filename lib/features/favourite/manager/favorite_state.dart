@@ -5,12 +5,12 @@ sealed class FavoriteState {}
 
 final class FavoriteInitial extends FavoriteState {}
 
-final class FavoriteLoading extends FavoriteState {}
-final class FavoriteSuccess extends FavoriteState {
-  final List<CategoryModel> notes;
-  FavoriteSuccess({required this.notes});
+final class GetCartLoading extends FavoriteState {}
+final class GetCartSuccess extends FavoriteState {
+  final List<LineVoiceModel> lineVoices;
+  GetCartSuccess({required this.lineVoices});
 }
-final class FavoriteFailure extends FavoriteState {
+final class GetCartFailure extends FavoriteState {
   final String message;
-  FavoriteFailure({required this.message});
+  GetCartFailure({required this.message});
 }

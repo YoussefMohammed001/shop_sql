@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shop_sql/core/data_base/shop_data_base.dart';
+import 'package:shop_sql/features/favourite/model/line_voice_model.dart';
 import 'package:shop_sql/features/products/model/products_model.dart';
 
 part 'products_state.dart';
@@ -19,9 +20,16 @@ class ProductsCubit extends Cubit<ProductsState> {
     getProducts(catId: productsModel.catId);
   }
 
+
   deleteProduct({required int id, required int catId}) async {
     ShopDatabase.deleteProduct(id);
     getProducts(catId:catId);
+  }
+
+
+  addToCart({required LineVoiceModel lineInvoice}) async {
+    await ShopDatabase.addLineVoice(lineVoiceModel: lineInvoice);
+
   }
 
 }

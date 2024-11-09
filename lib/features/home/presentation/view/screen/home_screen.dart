@@ -62,27 +62,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: TextFormField(
                   controller: searchController,
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10.sp),
-                    border:  OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r)
-                    ),
-                    labelText: "Category",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.r)),
+                  hintText: "Search",
                   ),
-                  onChanged: (value){
+                  onChanged: (value) {
                     safePrint(value);
                     search = value;
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
                 ),
               ),
-
               SizedBox(
                 height: 20.h,
               ),
-
               BlocBuilder<HomeCubit, HomeState>(
                 builder: (BuildContext context, HomeState state) {
                   if (state is HomeLoadingState) {
@@ -95,19 +90,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: state.categories.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Visibility(
-                            visible: search.isEmpty || state.categories[index].category.toLowerCase().contains(search.toLowerCase()),
+                            visible: search.isEmpty ||
+                                state.categories[index].category
+                                    .toLowerCase()
+                                    .contains(search.toLowerCase()),
                             child: InkWell(
-                              onTap: (){
+                              onTap: () {
                                 pushNamed(context, Routes.productScreen,
-                                arguments: ProductsArgs(
-                                  catId: state.categories[index].id,
-                                  catName: state.categories[index].category,
-                                )
+                                    arguments: ProductsArgs(
+                                      catId: state.categories[index].id,
+                                      catName: state.categories[index].category,
+                                    )
                                 );
-
                               },
                               child: Container(
-
                                 margin: EdgeInsets.all(10.sp),
                                 child: Row(
                                   children: [
@@ -116,7 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       backgroundColor: Colors.blue,
                                       child: Text(
                                         state.categories[index].id.toString(),
-                                        style: const TextStyle(color: Colors.white),
+                                        style: const TextStyle(
+                                            color: Colors.white),
                                       ),
                                     ),
                                     SizedBox(
@@ -132,45 +129,61 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        safePrint(
-                                            state.categories[index].id.toString());
-                                        showDialog(context: context, builder:
-                                        (context){
-                                          return AlertDialog(
-                                            actions: [
-                                              SizedBox(
-                                                height: 130,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text("Are you sure you want to delete ${state.categories[index].category}?"),
-                                                    SizedBox(height: 10.h,),
-                                                    Row(
+                                        safePrint(state.categories[index].id
+                                            .toString());
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                actions: [
+                                                  SizedBox(
+                                                    height: 130,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
-                                                        Expanded(
-                                                          child: ElevatedButton(onPressed: (){
-                                                            cubit.deleteCategory(
-                                                                state.categories[index].id);
-                                                            pop(context);
-                                                          }, child:
-                                                          const Text("Delete")),
+                                                        Text(
+                                                            "Are you sure you want to delete ${state.categories[index].category}?"),
+                                                        SizedBox(
+                                                          height: 10.h,
                                                         ),
-                                                        SizedBox(width: 10.w,),
-                                                        Expanded(
-                                                          child: ElevatedButton(onPressed: (){
-                                                            pop(context);
-                                                          }, child:
-                                                          const Text("Cancel")),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child:
+                                                                  ElevatedButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        cubit.deleteCategory(state
+                                                                            .categories[index]
+                                                                            .id);
+                                                                        pop(context);
+                                                                      },
+                                                                      child: const Text(
+                                                                          "Delete")),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 10.w,
+                                                            ),
+                                                            Expanded(
+                                                              child:
+                                                                  ElevatedButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        pop(context);
+                                                                      },
+                                                                      child: const Text(
+                                                                          "Cancel")),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          );
-                                        }
-                                        );
+                                                  )
+                                                ],
+                                              );
+                                            });
                                       },
                                       child: const Icon(
                                         Icons.delete_outline_rounded,
@@ -186,16 +199,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                           context: context,
                                           onPress: () {
                                             cubit.updateCategory(CategoryModel(
-                                                category: categoryController.text,
-                                            id: state.categories[index].id
-                                            ));
+                                                category:
+                                                    categoryController.text,
+                                                id: state
+                                                    .categories[index].id));
                                             categoryController.clear();
                                             setState(() {});
                                             pop(context);
                                           },
-                                          categoryController: categoryController,
+                                          categoryController:
+                                              categoryController,
                                           formKey: formKey,
-                                          title: "Update ${state.categories[index].category} Category",
+                                          title:
+                                              "Update ${state.categories[index].category} Category",
                                           buttonTitle: "Update",
                                         );
                                         safePrint("press");
@@ -213,8 +229,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         separatorBuilder: (BuildContext context, int index) {
                           return Visibility(
-                            visible: search.isEmpty || state.categories[index].category.toLowerCase().contains(search.toLowerCase()),
-
+                            visible: search.isEmpty ||
+                                state.categories[index].category
+                                    .toLowerCase()
+                                    .contains(search.toLowerCase()),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 20.sp,

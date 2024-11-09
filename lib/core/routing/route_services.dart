@@ -26,11 +26,8 @@ class RouteServices {
             final args = routeSettings.arguments as ProductsArgs;
             return ProductsScreen(args: args,);
           },
+
         );
-
-
-
-
       default:
         return _errorRoute();
     }

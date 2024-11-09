@@ -7,5 +7,4 @@ safePrint(String text) {
     print("<----------- safePrint ----------->");
 
   }
-
 }
