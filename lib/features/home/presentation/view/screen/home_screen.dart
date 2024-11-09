@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     contentPadding: EdgeInsets.all(10.sp),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.r)),
-                  hintText: "Search",
+                    hintText: "Search",
                   ),
                   onChanged: (value) {
                     safePrint(value);
@@ -100,8 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     arguments: ProductsArgs(
                                       catId: state.categories[index].id,
                                       catName: state.categories[index].category,
-                                    )
-                                );
+                                    ));
                               },
                               child: Container(
                                 margin: EdgeInsets.all(10.sp),

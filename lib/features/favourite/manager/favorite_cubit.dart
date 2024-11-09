@@ -12,9 +12,9 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
   getLineVoice() async {
     emit(GetCartLoading());
-    await ShopDatabase.getLineVoice().then((onValue){
-      emit(GetCartSuccess(lineVoices: onValue));
-    });
+    // await ShopDatabase.getLineVoice().then((onValue){
+    //   emit(GetCartSuccess(lineVoices: onValue));
+    // });
 
   }
 

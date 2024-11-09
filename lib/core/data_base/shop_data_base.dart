@@ -11,7 +11,7 @@ class ShopDatabase {
     // open the database
     await openDatabase(
       'shop.db',
-      version: 1,
+      version: 3,
       onCreate: (Database db, int version) async {
         // When creating the db, create the table
         await db.execute(
@@ -19,7 +19,8 @@ class ShopDatabase {
         await db.execute(
             'CREATE TABLE Products (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, quantity INTEGER, cat_id INTEGER, FOREIGN KEY(cat_id) REFERENCES Categories(id))');
         await db.execute("CREATE TABLE INVOICES (id INTEGER PRIMARY KEY, total_price INTEGER)");
-        await db.execute("CREATE TABLE Line_Voices (id INTEGER PRIMARY KEY,product_id INTEGER, quantity INTEGER, price INTEGER, FOREIGN KEY(product_id) REFERENCES Products(id))");
+        await db.execute("CREATE TABLE Line_Voices (id INTEGER PRIMARY KEY, invoice_id INTEGER, product_id INTEGER, quantity INTEGER, price INTEGER, FOREIGN KEY(invoice_id) REFERENCES INVOICES(id) ,FOREIGN KEY(product_id) REFERENCES Products(id))");
+
 
 
         },
@@ -69,19 +70,44 @@ static Future deleteProduct(int id) async {
 }
 
 
-static Future addInvoice({required int totalPrice}) async {
-  await database!.rawQuery("INSERT INTO INVOICES(total_price) VALUES($totalPrice)");
-}
+  static Future<int> addInvoice({required double totalPrice}) async {
+    // Insert the new invoice and get the generated ID
+    int invoiceId = await database!.rawInsert(
+      "INSERT INTO INVOICES(total_price) VALUES(?)",
+      [totalPrice],
+    );
+    return invoiceId;
+  }
 
 
-static Future addLineVoice({required LineVoiceModel lineVoiceModel}) async {
-  await database!.rawQuery(
-      "INSERT INTO Line_Voices(product_id, quantity, price) VALUES(${lineVoiceModel.productId}, ${lineVoiceModel.quantity}, ${lineVoiceModel.price})");
-}
 
 
-static Future<List<LineVoiceModel>> getLineVoice() async {
-  List<Map> list = await database!.rawQuery("SELECT * FROM Line_Voices");
+
+
+
+
+
+  static Future<int> addLineVoice({required LineVoiceModel lineVoiceModel}) async {
+    // Insert the line voice and retrieve the inserted id
+    var result = await database!.rawInsert(
+        "INSERT INTO Line_Voices(product_id, invoice_id, quantity, price) VALUES(?, ?, ?, ?)",
+        [
+          lineVoiceModel.productId,
+          lineVoiceModel.invoiceId,
+          lineVoiceModel.quantity,
+          lineVoiceModel.price,
+        ]);
+
+    // Return the inserted id (primary key)
+    return result; // In SQLite, the return value of rawInsert is the id of the inserted row.
+  }
+
+
+
+
+
+static Future<List<LineVoiceModel>> getLineVoice({required int invoiceId}) async {
+  List<Map> list = await database!.rawQuery("SELECT * FROM Line_Voices WHERE invoice_id = $invoiceId");
   return list.map((e) => LineVoiceModel.fromJson(e)).toList();
 }
 
@@ -91,5 +117,10 @@ static Future<List<InvoiceModel>> getInvoices() async {
   return list.map((e) => InvoiceModel.fromJson(e)).toList();
 }
 
+static Future<InvoiceModel> getInvoice(int id) async {
+  List<Map> list = await database!.rawQuery(
+      "SELECT * FROM INVOICES WHERE id = $id");
+  return InvoiceModel.fromJson(list[0]);
+}
 
 }

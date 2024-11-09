@@ -39,6 +39,8 @@ dependencies:
   flutter_screenutil: ^5.9.3
   sqflite: ^2.4.0
   flutter_keyword_highlighter: ^1.1.1
+  printing: ^5.13.4
+  pdf: ^3.11.1
 
 
 dev_dependencies:
