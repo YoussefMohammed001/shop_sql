@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sql/core/routing/routes.dart';
+import 'package:shop_sql/features/cart/view/cart_args.dart';
+import 'package:shop_sql/features/cart/view/screen/cart_screen.dart';
 import 'package:shop_sql/features/main_screen/presentation/view/screen/main_screen.dart';
 import 'package:shop_sql/features/products/presentation/view/screens/products_screen.dart';
 import 'package:shop_sql/features/products/products_args.dart';
@@ -25,6 +27,14 @@ class RouteServices {
           builder: (_) {
             final args = routeSettings.arguments as ProductsArgs;
             return ProductsScreen(args: args,);
+          },
+
+        );
+        case Routes.cartScreen:
+        return MaterialPageRoute(
+          builder: (_) {
+            final args = routeSettings.arguments as CartArgs;
+            return  CartScreen(args: args,);
           },
 
         );
